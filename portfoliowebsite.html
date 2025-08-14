@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Website</title>
+  <link rel="stylesheet" href="portfoliowebsite.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+
+  <script>
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+      window.scrollTo(0, 0);
+    }
+  </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="#about" class="btn">about</a>
+                <a href="#projects" class="btn">projects</a>
+                <a href="#certifications" class="btn">certifications</a>
+                <a href="#contact" class="btn">contact me</a>
+
+                <a href="https://github.com/siya-mistry" class="socialbtn"><img src="media/gitlogo.png" alt="Git"></a>
+                <a href="https://www.linkedin.com/in/siyapmistry" class="socialbtn"><img src="media/ll.png" alt="Linkedin"></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="intro">
+            <div class="container">
+                <div class="intro-text">
+                    <h1>Siyona Mistry</h1>
+                    <h2>Software Engineer</h2>
+                </div>
+            </div>
+        </section>
+        <section class="about" id="about">
+            <div class="container">
+                <div class="about-text">
+                    <h1 id="about-me-title">About Me</h1>
+                    <div class="about-me-groups">
+                        <div class="about-me-box">
+                            <h2 >Education</h2>
+                            <h3>B.A. in Computer Science</h3>
+                                <ul> 
+                                    <li> University of Alabama at Birmingham</li>
+                                    <li> Minors: Economics, Business Administration</li>
+                                    <li> GPA:4.0</li>
+                                </ul>
+                            <h3>M.S. in Computer Science </h3>
+                                <ul>
+                                    <li> Georgia Tech</li>
+                                    <li> Specialization: Machine Learning</li>
+                                </ul>
+                        </div>
+                        <div class="about-me-box">
+                            <h2 >Languages</h2>
+                                <ul>
+                                    <li>Python</li>
+                                    <li>Java</li>
+                                    <li>Golang</li>
+                                    <li>html</li>
+                                    <li>Javascript</li>
+                                </ul>
+                        </div>
+                        <div class="about-me-box">
+                            <h2 >Tools & Methods</h2>
+                            <ul>
+                                <li>Kubernetes</li>
+                                <li>Docker</li>
+                                <li>Git</li>
+                                <li>Agile</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="projects" id="projects">
+            <div class="container">
+
+                <div class="project1">
+
+                </div>
+                <div class="project2">
+
+                </div>
+                <div class="project3">
+
+                </div>
+            </div>
+        </section>
+        <section class="certifications" id="certifications"></section>
+        <section class="contact" id="contact"></section>
+    </main>
+</body>
+</html>
