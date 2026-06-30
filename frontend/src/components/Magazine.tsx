@@ -821,6 +821,25 @@ export default function Magazine() {
       snap.current = false;
       return;
     }
+    // On mobile the rotateY flip makes R3F re-measure the canvas mid-rotation as a
+    // squished sliver (a viewport resize landing during the rotation), which threw
+    // the book off to the side. Skip the 3D rotation on phones: cross-fade the book
+    // out, snap to the cover while it's invisible, fade back in. No transform → no
+    // squish, and snap=true keeps the pages from riffling.
+    if (IS_MOBILE) {
+      el.style.transition = "opacity 200ms ease";
+      el.style.opacity = "0";
+      window.setTimeout(() => {
+        land();
+        el.style.opacity = "1";
+        window.setTimeout(() => {
+          flipping.current = false;
+          snap.current = false;
+          applyRef.current();
+        }, 240);
+      }, 200);
+      return;
+    }
     const ease = "cubic-bezier(.45,0,.25,1)";
     el.style.transition = `transform ${D}ms ${ease}`;
     el.style.transform = "rotateY(90deg)";
@@ -857,10 +876,10 @@ export default function Magazine() {
             // near-zero width — which blew up the camera aspect and threw the book
             // tiny into a corner. ResizeObserver still catches real window resizes.
             resize={{ scroll: false }}
-            // Mobile GPUs choke on 1.5× DPR (2.25× the pixels) + MSAA. Cap DPR to
-            // 1 and drop antialiasing on phones — the single biggest perf win, and
-            // barely perceptible at phone pixel density. Keeps the clearcoat gloss.
-            dpr={IS_MOBILE ? 1 : [1, 1.5]}
+            // DPR 1 was too soft on retina phones (text rendered blurry). 1.5 is
+            // sharp enough while the other mobile cuts (no MSAA, thin grain, lighter
+            // shadow) keep it smooth. MSAA still off on mobile.
+            dpr={IS_MOBILE ? 1.5 : [1, 1.5]}
             gl={{ antialias: !IS_MOBILE, alpha: true }}
             camera={{ fov: 42, position: [1, 0, 6] }}
             style={{ position: "absolute", inset: 0, filter: "drop-shadow(0 26px 46px rgba(74,16,34,0.32))" }}

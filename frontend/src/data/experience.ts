@@ -16,7 +16,7 @@ export const experience: ExperienceItem[] = [
     url: "https://krownpetro.com",
     details: [
       "Develop fuel technology products for the convenience industry.",
-      "Own Krown Connect end to end as the sole engineer, a production operations platform supportingc cross-team use.",
+      "Own Krown Connect end to end as the sole engineer, a production operations platform supporting cross-team use.",
       "Build and deploy full-stack apps with React, FastAPI, Python, and PostgreSQL on AWS.",
       "Reduce inventory tracking time by 80% by replacing manual workflows with centralized software.",
     ],
