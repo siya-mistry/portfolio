@@ -52,12 +52,12 @@ export const projects: Project[] = [
   {
     title: "This Portfolio",
     blurb:
-      "A React + TypeScript site rendered as a 3D, flippable magazine, with a serverless Go contact API.",
+      "A React + TypeScript site rendered as a 3D, flippable magazine, with a serverless contact API.",
     details: [
       "The whole portfolio is a scroll-driven, flippable magazine built with custom Three.js shaders that curl and turn each page.",
-      "Pages are drawn to canvas and used as GPU textures, with a serverless Go contact API for the message form.",
+      "Pages are drawn to canvas and used as GPU textures, with a serverless contact API for the message form.",
     ],
-    tech: ["React", "TypeScript", "Three.js", "Go"],
+    tech: ["React", "TypeScript", "Three.js"],
     repo: "https://github.com/siya-mistry",
   },
 ];

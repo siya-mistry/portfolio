@@ -825,7 +825,7 @@ function drawProjects(ctx: CanvasRenderingContext2D, fig: HTMLImageElement | nul
     "04",
     "This Portfolio",
     "github.com/siya-mistry",
-    "A React and TypeScript site rendered as a 3D, flippable magazine, with a serverless Go contact API.",
+    "A React and TypeScript site rendered as a 3D, flippable magazine, with a serverless contact API.",
     1064,
     false,
   );

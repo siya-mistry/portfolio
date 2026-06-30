@@ -1,30 +1,27 @@
 # Siyona Mistry — Portfolio
 
-A full-stack personal portfolio.
+A personal portfolio rendered as a 3D, flippable magazine.
 
 ```
 portfolio/
-├── frontend/   React + TypeScript + Tailwind v4 + Framer Motion (Vite)
-├── backend/    Go contact API (serverless-ready, framework-free)
+├── frontend/         React + TypeScript + Tailwind v4 + Three.js (Vite)
+│   ├── src/          the app (the magazine lives in src/components/Magazine.tsx)
+│   ├── api/          Vercel serverless functions (contact form → email)
+│   └── scripts/      image tooling (e.g. grade-polaroid.py)
 ```
 
 ## Quick start
 
 ```bash
-# Frontend
 cd frontend && npm install && npm run dev      # → http://localhost:5173
-
-# Backend (optional — only needed for the contact form locally)
-cd backend && go run ./cmd/server              # → http://localhost:8080
 ```
 
-The Vite dev server proxies `/api/*` to the Go backend, so the contact form
-works locally when both are running. With no SMTP configured, messages are
-logged to the backend console rather than emailed.
+The contact endpoint is a Vercel function at `frontend/api/contact.ts`. To run it
+locally alongside the app, use `vercel dev` instead of `npm run dev`.
 
 ## Editing content
 
-Everything is data-driven — no need to touch JSX:
+Most copy is data-driven:
 
 | What                          | File                              |
 | ----------------------------- | --------------------------------- |
@@ -33,16 +30,28 @@ Everything is data-driven — no need to touch JSX:
 | Projects                      | `frontend/src/data/projects.ts`   |
 | Experience timeline           | `frontend/src/data/experience.ts` |
 
-Drop a `resume.pdf` into `frontend/public/` and set `resumeUrl` in `site.ts`
-to link it.
+The magazine pages themselves are drawn to canvas in
+`frontend/src/lib/pageRenderers.ts`.
 
-## Architecture notes
+## Deploy (Vercel)
 
-The backend is a single serverless-ready Go function, not a standing service —
-the right size for one stateless endpoint. See `backend/README.md`.
+Single project — import the repo and set **Root Directory = `frontend`**. Vercel
+detects Vite for the static build and deploys `frontend/api/contact.ts` as a
+serverless function at `/api/contact` (same origin as the site, so the form needs
+no CORS or separate API URL).
 
-## Deploy
+Set these environment variables (Project → Settings → Environment Variables) for
+email delivery:
 
-Frontend builds to static files (`cd frontend && npm run build`) for any CDN/
-host (Vercel recommended). The Go endpoint deploys as a serverless function.
-Custom domain: `siyonamistry.com` (planned).
+| Variable            | Value                                  |
+| ------------------- | -------------------------------------- |
+| `SMTP_HOST`         | `smtp.gmail.com`                       |
+| `SMTP_PORT`         | `587`                                  |
+| `SMTP_USER`         | your Gmail address                     |
+| `SMTP_PASS`         | a Gmail **App Password** (not your pw) |
+| `CONTACT_TO`        | where messages land                    |
+| `CONTACT_FROM`      | your Gmail address                     |
+
+(Leave SMTP_* unset and the function just logs messages instead of emailing.)
+
+Then add your custom domain (Settings → Domains) and point its DNS at Vercel.

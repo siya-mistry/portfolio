@@ -7,10 +7,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
-    // Proxy API calls to the Go backend during local dev so the frontend
-    // can call `/api/contact` without worrying about CORS or origins.
-    proxy: {
-      "/api": "http://localhost:8080",
-    },
   },
 });
+
+// The contact endpoint is a Vercel serverless function at `api/contact.ts`.
+// To exercise it locally (not just `npm run dev`), run `vercel dev` — it serves
+// the static app AND the function together.
