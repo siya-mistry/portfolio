@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="portfoliowebsite.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script defer src="swiperscript.js"></script>
+  
   <script>
     if (location.hash) {
       history.replaceState(null, "", location.pathname + location.search);
@@ -18,13 +22,16 @@
     <header>
         <div class="container">
             <div class="navbar">
-                <a href="#about" class="btn">about</a>
-                <a href="#projects" class="btn">projects</a>
-                <a href="#certifications" class="btn">certifications</a>
-                <a href="#contact" class="btn">contact me</a>
-
-                <a href="https://github.com/siya-mistry" class="socialbtn"><img src="media/gitlogo.png" alt="Git"></a>
-                <a href="https://www.linkedin.com/in/siyapmistry" class="socialbtn"><img src="media/ll.png" alt="Linkedin"></a>
+                <div id="buttons">
+                    <a href="#about" class="btn">about</a>
+                    <a href="#projects" class="btn">projects</a>
+                    <a href="#experience" class="btn">experience</a>
+                    <a href="#contact" class="btn">contact me</a>
+                </div>
+                <div id="social-buttons">
+                    <a href="https://github.com/siya-mistry" class="socialbtn"><img src="media/gitlogo.png" alt="Git"></a>
+                    <a href="https://www.linkedin.com/in/siyapmistry" class="socialbtn"><img src="media/ll.png" alt="Linkedin"></a>
+                </div>
             </div>
         </div>
     </header>
@@ -81,20 +88,60 @@
         </section>
         <section class="projects" id="projects">
             <div class="container">
-
-                <div class="project1">
-
-                </div>
-                <div class="project2">
-
-                </div>
-                <div class="project3">
-
-                </div>
+                <div class="projects-section-div">
+                    <div class="project-title-div">
+                        <h1 id="project-title">Projects</h1>
+                    </div>
+                    <div class="swiper">                  
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <h2>Project 1</h2>
+                                <p>Tech Stack: </p>
+                                <p>Description: </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <h2>Project 2</h2>
+                                <p>Tech Stack: </p>
+                                <p>Description: </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <h2>Project 3</h2>
+                                <p>Tech Stack: </p>
+                                <p>Description: </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <h2>Project 4</h2>
+                                <p>Tech Stack: </p>
+                                <p>Description: </p>
+                            </div>
+                        </div>           
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+               </div>
             </div>
         </section>
-        <section class="certifications" id="certifications"></section>
-        <section class="contact" id="contact"></section>
+        <section class="experience" id="experience">
+            <div class="container">
+              <h1 id="experience-title">Experience</h1>
+              <div class="experience-groups">
+                <div class="experience-box">
+                  <h2>Software Engineer Intern</h2>
+                  <!-- bullets/details here -->
+                </div>
+                <div class="experience-box">
+                  <h2>Computer Science Teaching Assistant</h2>
+                </div>
+                <div class="experience-box">
+                  <h2>Data Intern</h2>
+                </div>
+              </div>
+            </div>
+          </section>
+        <section class="contact" id="contact">
+            <h2>I'm open to work!</h2>
+            <a href="mailto:you@example.com" class="btn-email">Email Me: spmistry@uab.edu</a>
+        </section>
     </main>
 </body>
 </html>

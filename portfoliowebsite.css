@@ -24,19 +24,28 @@ header {
 
 .navbar{
     display: flex;
-    position:static;
     min-height: 5vh;
     align-items: center; 
+}
+
+#buttons{
+    display: flex;
     gap: 2rem; 
 }
 
+#social-buttons{
+    display: flex;
+    margin-left: auto;
+    gap: 1rem;
+
+}
 
 .navbar a {
     color: black;
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
     font-weight: 200;
-    font-size: 2rem; 
+    font-size: 5vmin; 
 }
 
 .intro{
@@ -59,7 +68,7 @@ header {
     font-weight: 300;
 }
 
-.intro h1, .about h1{
+.intro h1, .about h1, .experience h1{
     font-size: clamp(4rem, 5vw, 5rem);
     margin: 0;
     font-weight: 300;
@@ -78,17 +87,19 @@ header {
 
 }
 
-#about-me-title{
+#about-me-title, #experience-title{
     text-align: center;
     font-family: 'Montserrat', sans-serif;
     padding-bottom: 2%;
 }
 
-.about-me-groups{
+
+.about-me-groups, .experience-groups{
     display: flex;
+    flex-direction: row;
     gap: 5%; 
     justify-content: center;
-
+    padding-top: 2%;
 }
 
 .about h2 {
@@ -96,10 +107,11 @@ header {
     margin: 0;
 }
 
-.about-me-box{
+.about-me-box, .experience-box{
     width:100%;
     padding: 0.75rem 1rem;
     background-color: #d1e0fd;
+    
 
 }
 
@@ -112,26 +124,122 @@ header {
 
 }
 
-.projects{
+.projects .container { 
+    margin: 0;              /* override the global 10% margins here */
+    max-width: 100%;
+    height: 100%; 
+  }
+
+.projects {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    background-color: #d1e0fd;
+  }
+  
+  .projects-section-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* 50/50 split */
+    height: 100%; 
+    align-items: center;
+  }
+  
+  /* Center the title vertically & horizontally on the left */
+
+  .project-title-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #project-title{
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(4rem, 5vw, 5rem);
+    font-weight: 300;
+  }
+  
+  :root{
+    --proj-swiper-h: 66vh;  /* height of the carousel area */
+    --proj-gap: 16px;       /* must match JS spaceBetween */
+    --slides: 3;            /* how many we want visible */
+  }
+  
+  /* Optional: scale down on smaller screens */
+  @media (max-width: 900px){ :root{ --slides: 2; } }
+  @media (max-width: 600px){ :root{ --slides: 1; } }
+
+  /* Right column: center the carousel area */
+  .projects .swiper{
+    height: var(--proj-swiper-h);
+    margin-block: auto;
+    position: relative;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* make this column fill its half */
+  }
+  
+  /* Index-card slides: long & narrow */
+  .projects .swiper-slide{
+    width: clamp(320px, 42vw, 540px);     /* “long” */
+    height: clamp(120px, 18vh, 180px);    /* “narrow” */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.08);
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   
+  }
+
+
+  .projects .swiper-button-prev,
+.projects .swiper-button-next {
+  left: 50%;
+  transform: translateX(-50%) rotate(90deg);
+  z-index: 10;
+}
+
+.projects .swiper-button-prev { top: 8px;  bottom: auto; }
+.projects .swiper-button-next { bottom: 8px; top: auto; }
+
+.experience {
     position: relative;
     width: 100%;
     height: 90vh; 
-    background-color: #d1e0fd;
-
-}
-
-.certifications {
-    position: relative;
-    width: 100%;
-    height: 60vh; 
     background-color: white;
-
+    padding-top: 2%;
 }
 
 .contact{
     position: relative;
     width: 100%;
-    height: 60vh; 
+    height: 30vh; 
     background-color: #dddddd;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
+
+.contact h2{
+    font-size: clamp(1rem, 5vw, 2rem);
+    font-weight: 300;
+}
+
+.btn-email{
+    padding:.75rem 1.25rem;
+    border-radius:8px;
+    font-family:'Montserrat',sans-serif;
+    text-decoration: none;
+    color: black;
+    padding: .6rem 1.2rem;
+    border-radius: 9999px; 
+    border-width: 8px;
+    border: 2px solid currentColor
+  }
+
+  
+  
