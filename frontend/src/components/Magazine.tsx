@@ -40,12 +40,16 @@ type Seg =
 // it equals the section content's overflow, so the content pans 1:1 with the
 // page scroll — and collapses to ZERO when the content already fits the viewport
 // (no dead "separate" scroll). See buildTimeline + the overflow measurement.
-const LEAD_W = 80; // opening hold on the cover
-const OPEN_W = 90; // book opens / closes (first & last turn)
-const TURN_W = 86; // a page flip between chapters
-const TAIL_W = 90; // closing hold
-const ENTER_W = 104; // panel reveals in as the book performs its exit
-const EXIT_W = 92; // panel leaves as the next page arrives
+// On mobile, shrink the cinematic "dead" scroll (cover hold, page-open, turns,
+// panel enter/exit) by ~35% so the book responds with far less swiping. The READ
+// budget stays full so section content still pans 1:1 with the finger.
+const CINE = IS_MOBILE ? 0.65 : 1;
+const LEAD_W = 80 * CINE; // opening hold on the cover
+const OPEN_W = 90 * CINE; // book opens / closes (first & last turn)
+const TURN_W = 86 * CINE; // a page flip between chapters
+const TAIL_W = 90 * CINE; // closing hold
+const ENTER_W = 104 * CINE; // panel reveals in as the book performs its exit
+const EXIT_W = 92 * CINE; // panel leaves as the next page arrives
 const DEFAULT_READ = 110; // read budget for a section not yet measured
 
 const CHAPTERS: Array<{ section: Section; move: Move }> = [
