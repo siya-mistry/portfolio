@@ -16,6 +16,12 @@ const ACCENT_DEEP = "#6e1226";
 const M = 88;
 const Mg = 110;
 
+// Phones render the baked pages small, so body copy is hard to read. On mobile we
+// give it more weight (500 vs 400 — both are preloaded in ensureFonts) and thin
+// the paper grain, which keeps small text crisp and speeds up the texture bake.
+const IS_MOBILE = typeof window !== "undefined" && window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+const BODY_W = IS_MOBILE ? "500" : "400";
+
 export type Leaf = { front: THREE.Texture; back: THREE.Texture };
 
 async function ensureFonts(): Promise<void> {
@@ -27,7 +33,7 @@ async function ensureFonts(): Promise<void> {
     "italic 600 80px 'Playfair Display'",
     "italic 600 40px 'Playfair Display'",
     "italic 500 50px 'Playfair Display'",
-    "400 31px 'EB Garamond'",
+    `${BODY_W} 31px 'EB Garamond'`,
     "500 31px 'EB Garamond'",
     "italic 400 31px 'EB Garamond'",
     "500 18px 'Montserrat'",
@@ -76,7 +82,7 @@ function bakePaperGrain(ctx: CanvasRenderingContext2D): void {
   ctx.save();
   ctx.globalCompositeOperation = "soft-light";
   ctx.lineWidth = 1;
-  for (let i = 0; i < 9000; i++) {
+  for (let i = 0; i < (IS_MOBILE ? 2600 : 9000); i++) {
     const x = Math.random() * PW;
     const y = Math.random() * PH;
     const len = 2 + Math.random() * 9;
@@ -696,20 +702,20 @@ function drawAbout(ctx: CanvasRenderingContext2D, portrait: HTMLImageElement | n
   ctx.font = "italic 600 46px 'Playfair Display'";
   ctx.fillText("SWE @ Krown Petroleum", M, 528);
   ctx.fillStyle = SOFT;
-  ctx.font = "400 27px 'EB Garamond'";
+  ctx.font = `${BODY_W} 27px 'EB Garamond'`;
   ctx.fillText("I fix messy workflows with clean software", M, 572);
 
   // Education
   miniHead("Education", 628);
   ctx.fillStyle = INK;
-  ctx.font = "400 28px 'EB Garamond'";
+  ctx.font = `${BODY_W} 28px 'EB Garamond'`;
   ctx.fillText("M.S. Computer Science (AI), Georgia Tech", M, 674);
   ctx.fillText("B.A. Computer Science, UAB · 4.0 GPA", M, 714);
 
   // Beyond the code
   miniHead("Beyond the code", 808);
   ctx.fillStyle = INK;
-  ctx.font = "400 28px 'EB Garamond'";
+  ctx.font = `${BODY_W} 28px 'EB Garamond'`;
   const iy = wrapText(
     ctx,
     "Anything creative keeps me going: from fashion to interior design to painting, dancing, and building websites just for the fun of it.",
@@ -719,7 +725,7 @@ function drawAbout(ctx: CanvasRenderingContext2D, portrait: HTMLImageElement | n
     40,
   );
   ctx.fillStyle = SOFT;
-  ctx.font = "italic 400 27px 'EB Garamond'";
+  ctx.font = `italic ${BODY_W} 27px 'EB Garamond'`;
   const by = wrapText(ctx, "On the event-planning committee of Birmingham Women in Tech.", M, iy + 56, PW - M - M, 40);
 
   // bold closing statement on the reverse-color magenta block
@@ -792,7 +798,7 @@ function drawProjects(ctx: CanvasRenderingContext2D, fig: HTMLImageElement | nul
     ctx.fillText(url, colX + 52, y + 32);
     clearTracking(ctx);
     ctx.fillStyle = INK; // darker + bigger so the descriptions read clearly
-    ctx.font = "400 27px 'EB Garamond'";
+    ctx.font = `${BODY_W} 27px 'EB Garamond'`;
     wrapText(ctx, body, colX, y + 76, colR - colX, 36);
     if (divider) rule(ctx, colX, y + 168, colR);
   };
@@ -884,7 +890,7 @@ function drawExperience(ctx: CanvasRenderingContext2D, fig: HTMLImageElement | n
     ctx.fillText(period, colR, y);
     ctx.textAlign = "left";
     ctx.fillStyle = SOFT;
-    ctx.font = "400 27px 'EB Garamond'";
+    ctx.font = `${BODY_W} 27px 'EB Garamond'`;
     wrapText(ctx, body, textX, y + 44, colR - textX, 38);
   };
 
@@ -1013,7 +1019,7 @@ function drawContact(ctx: CanvasRenderingContext2D, fig: HTMLImageElement | null
   const capRight = drawDropCap(ctx, "T", Mg, 540);
   ctx.textAlign = "left";
   ctx.fillStyle = INK;
-  ctx.font = "400 31px 'EB Garamond'";
+  ctx.font = `${BODY_W} 31px 'EB Garamond'`;
   drawWrappedAroundCap(
     ctx,
     "hat's the whole issue. The rest is off the record, over coffee. I'm always open to collaborations, cool new projects, freelance work, and good conversation.",
@@ -1058,7 +1064,7 @@ function drawContact(ctx: CanvasRenderingContext2D, fig: HTMLImageElement | null
     ctx.fillText(label, bx + 44, y);
     clearTracking(ctx);
     ctx.fillStyle = "#fdeef0";
-    ctx.font = "400 30px 'EB Garamond'";
+    ctx.font = `${BODY_W} 30px 'EB Garamond'`;
     ctx.fillText(value, bx + 200, y);
     y += 64;
   }

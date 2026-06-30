@@ -18,6 +18,15 @@ const LIFT = 0.55;
 const CURL = 0.7;
 const REST = 0.06;
 
+// One-time device class for GPU perf tuning. A phone can't afford the desktop
+// scene's clearcoat physical material, MSAA, or 1.5× DPR — so on touch/small
+// screens we render a lighter version. Evaluated once (device class is stable).
+const IS_MOBILE = typeof window !== "undefined" && window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+
+// How far to pull the camera in on mobile so page text is legible (1 = no zoom).
+// 0.82 ≈ 18% larger; lower = bigger text but more outer-margin crop.
+const MOBILE_PAGE_ZOOM = IS_MOBILE ? 0.82 : 1;
+
 // Each chapter gets its own signature "exit" as its clickable info takes over.
 // One cinematic language (a downward descent) — four different executions.
 type Move = "tumble" | "dive" | "layback" | "liftaway";
@@ -276,7 +285,7 @@ function BookRig({ leaves, progress, reveal, move, snap }: { leaves: Leaf[]; pro
       {pages.map((page, i) => (
         <Page3D key={i} page={page} index={i} count={pages.length} progress={progress} snap={snap} />
       ))}
-      <ContactShadows position={[0, -PAGE_H / 2 - 0.04, 0]} scale={PAGE_W * 4} resolution={256} blur={3} opacity={0.42} far={5} color="#5a2433" />
+      <ContactShadows position={[0, -PAGE_H / 2 - 0.04, 0]} scale={PAGE_W * 4} resolution={IS_MOBILE ? 128 : 256} blur={3} opacity={0.42} far={5} color="#5a2433" />
     </group>
   );
 }
@@ -309,7 +318,15 @@ function CameraRig({ progress, reveal, move, snap }: { progress: MutableRefObjec
     const fov = (camera.fov * Math.PI) / 180;
     const aspect = size.width / size.height;
     const tan = Math.tan(fov / 2);
-    const fitOne = Math.max((PAGE_H * 1.1) / 2 / tan, (PAGE_W * 1.12) / 2 / (tan * aspect));
+    // On phones, pull the camera in ~18% so an open spread's baked text reads
+    // larger (it only crops a sliver of outer page-margin whitespace). But ONLY on
+    // the inner pages — the front/back covers stay full-frame (zooming them just
+    // crops the cover art). `edge` is 0 at either cover and ramps to 1 one page in,
+    // so the zoom eases on/off across the opening and closing turns.
+    const maxPv = CHAPTERS.length + 1;
+    const edge = THREE.MathUtils.clamp(Math.min(pv, maxPv - pv), 0, 1);
+    const pageZoom = THREE.MathUtils.lerp(1, MOBILE_PAGE_ZOOM, smoothstep(edge));
+    const fitOne = pageZoom * Math.max((PAGE_H * 1.1) / 2 / tan, (PAGE_W * 1.12) / 2 / (tan * aspect));
     const fitTurn = Math.max((PAGE_H * 1.25) / 2 / tan, (PAGE_W * 2.6) / 2 / (tan * aspect));
 
     let targetX = baseX;
@@ -651,7 +668,11 @@ export default function Magazine() {
       // back cover into frame (pv → max), not only at the very bottom of scroll.
       // Max pv is CHAPTERS.length + 1 (the closed back cover); 0.8 into the final
       // turn the cover has mostly settled and reads as "the last page in frame".
-      setAtEnd(f.pv >= CHAPTERS.length + 0.8);
+      // Only once the back cover has SETTLED (closing turn finished, pv≈max), not
+      // mid-turn — during a turn the camera is zoomed out, and flipping from that
+      // unsettled state lands the book cornered. The tail "hold" still spans ~a
+      // screen-height, so the button appears well before the very bottom.
+      setAtEnd(f.pv >= CHAPTERS.length + 0.99);
       // wake the demand-mode canvas so the book follows + settles after scroll
       wakeRef.current = performance.now() + 900;
       invalidate();
@@ -836,8 +857,11 @@ export default function Magazine() {
             // near-zero width — which blew up the camera aspect and threw the book
             // tiny into a corner. ResizeObserver still catches real window resizes.
             resize={{ scroll: false }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true }}
+            // Mobile GPUs choke on 1.5× DPR (2.25× the pixels) + MSAA. Cap DPR to
+            // 1 and drop antialiasing on phones — the single biggest perf win, and
+            // barely perceptible at phone pixel density. Keeps the clearcoat gloss.
+            dpr={IS_MOBILE ? 1 : [1, 1.5]}
+            gl={{ antialias: !IS_MOBILE, alpha: true }}
             camera={{ fov: 42, position: [1, 0, 6] }}
             style={{ position: "absolute", inset: 0, filter: "drop-shadow(0 26px 46px rgba(74,16,34,0.32))" }}
           >
